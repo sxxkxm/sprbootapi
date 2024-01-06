@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>INSPINIA | Login</title>
+    <script th:replace="~{@{admin/includes/common/top}}" />
+</head>
+<body class="gray-bg">
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name">IN+</h1>
+            </div>
+            <h3>Welcome to IN+</h3>
+            <p>Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.
+            </p>
+            <p>Login in. To see it in action.</p>
+            <form class="m-t" role="form" action="index.html">
+                <div class="form-group">
+                    <input id="input_id" type="email" class="form-control" placeholder="Username" required="">
+                </div>
+                <div class="form-group">
+                    <input id="input_password" type="password" class="form-control" placeholder="Password" required="" onKeyPress="if(event.key === 'Enter'){adminLogin(input_id.value, input_password.value)}">
+                </div>
+            </form>
+            <button type="button" class="btn btn-primary block full-width m-b" onclick="adminLogin(input_id.value, input_password.value)">Login</button>
+            <button type="button" class="btn btn-primary block full-width m-b" onclick="adminLogout()">Logout</button>
+        </div>
+    </div>
+	<script th:replace="~{@{admin/includes/common/bottom}}" />
+	<script>
+function adminLogin(email, password){
+	
+	$.ajax({
+		url: "/api/tbuser/login",
+		method: "POST",
+		headers: {"Content-Type": "application/json"},
+		data: JSON.stringify({
+			"email": "xx123x@xxxx.com",
+			"password" : "testPass1!"
+		}),
+		success: (data, status, xhr)=>{
+			
+	    			alert(
+				"data : " + JSON.stringify(data) + "\n"
+				+ "status : " + JSON.stringify(status) + "\n"
+				+ "xhr : " + JSON.stringify(xhr) + "\n"
+				+ "xhr header : " + xhr.getResponseHeader("Authorization")
+        	
+        		);
+        		
+        		adminAfterLogin();
+			switch(data.status){
+	    		default:
+	    	}
+        	
+		},
+		error: (data)=>{
+			switch(data.status){
+	    		case constants.HttpStatusCodes.UNAUTHORIZED:
+	    			alert("일치하는 계정 정보가 없습니다.");
+	    			break;
+	    		default:
+	    			console.log("no matching status code");
+	    	}
+		}
+	});
+	
+}
+
+function adminAfterLogin(){
+	
+		$.ajax({
+			url: "/api/auth/access-token",
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			cache: false,
+			success: (data, status, xhr)=>{
+	        	alert(
+				"data : " + JSON.stringify(data) + "\n"
+				+ "status : " + JSON.stringify(status) + "\n"
+				+ "xhr : " + JSON.stringify(xhr) + "\n"
+				+ "xhr header : " + xhr.getResponseHeader("Authorization")
+        	
+        		);
+	        	
+			},
+			error: (data)=>{
+	        	alert(2);
+			},
+		});
+	
+}
+function adminLogout(){
+	
+	$.ajax({
+		url: "/api/auth/refresh-token",
+		method: "DELETE",
+		cache: false,
+		headers: {"Content-Type": "application/json"},
+		success: (data, status, xhr)=>{
+        	alert(
+				"data : " + JSON.stringify(data) + "\n"
+				+ "status : " + JSON.stringify(status) + "\n"
+				+ "xhr : " + JSON.stringify(xhr) + "\n"
+				+ "xhr header : " + xhr.getResponseHeader("Authorization")
+        	
+        		);
+		},
+		error: (data)=>{
+			alert("error");
+		},
+	});
+	
+}
+	</script>
+</body>
+</html>

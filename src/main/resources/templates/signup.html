@@ -1,0 +1,170 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<body th:replace="~{@{includes/head}}"></body>
+</head>
+
+<body>
+	<div class="container-scroller">
+
+		<!-- partial:partials/_navbar.html -->
+
+		<body th:replace="~{@{includes/navbar}}"></body>
+		<!-- partial -->
+
+		<div class="container-fluid page-body-wrapper">
+			<!-- partial:partials/_settings-panel.html -->
+			<div class="theme-setting-wrapper">
+				<div id="settings-trigger"><i class="ti-settings"></i></div>
+				<div id="theme-settings" class="settings-panel">
+					<i class="settings-close ti-close"></i>
+					<p class="settings-heading">SIDEBAR SKINS</p>
+					<div class="sidebar-bg-options selected" id="sidebar-light-theme">
+						<div class="img-ss rounded-circle bg-light border me-3"></div>Light
+					</div>
+					<div class="sidebar-bg-options" id="sidebar-dark-theme">
+						<div class="img-ss rounded-circle bg-dark border me-3"></div>Dark
+					</div>
+					<p class="settings-heading mt-2">HEADER SKINS</p>
+					<div class="color-tiles mx-0 px-4">
+						<div class="tiles success"></div>
+						<div class="tiles warning"></div>
+						<div class="tiles danger"></div>
+						<div class="tiles info"></div>
+						<div class="tiles dark"></div>
+						<div class="tiles default"></div>
+					</div>
+				</div>
+			</div>
+
+			<!-- partial:partials/_sidebar.html -->
+
+			<body th:replace="~{@{includes/sidebar}}"></body>
+			<!-- partial -->
+
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="row">
+						<div class="col-md-6 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title">Default form</h4>
+									<p class="card-description">
+										Basic form layout
+									</p>
+									<form class="forms-sample" id="form_tbuser_create">
+										<div class="form-group">
+											<label for="exampleInputUsername1">ID</label>
+											<input type="text" class="form-control" id="create_tbuser_name" name="username" placeholder="ID">
+										</div>
+										<div class="form-group">
+											<label for="exampleInputPassword1">Password</label>
+											<input type="text" class="form-control" id="create_tbuser_pw" name="password" placeholder="Password">
+										</div>
+										
+										<div class="form-group">
+											<label for="exampleInputPassword1">Phone</label>
+											<input type="text" class="form-control" id="create_tbuser_phone" name="phone" placeholder="Phone">
+										</div>
+									</form>
+									<button type="submit" class="btn btn-primary me-2" onclick="update_tbuser()">Submit</button>
+									<button class="btn btn-light">Cancel</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- content-wrapper ends -->
+				<!-- partial:partials/_footer.html -->
+				<body th:replace="~{@{includes/footer}}"></body>
+				<!-- partial -->
+			</div>
+
+			<!-- main-panel ends -->
+		</div>
+		<!-- page-body-wrapper ends -->
+	</div>
+	<!-- container-scroller -->
+
+	<body th:replace="~{@{includes/bottom}}"></body>
+	
+	<script type="text/javascript">
+function update_tbuser() {
+    
+var HttpStatusCodes = {
+   OK: 200,
+   CREATED: 201,
+   BAD_REQUEST: 400,
+   UNAUTHORIZED: 401,
+   FORBIDDEN: 403,
+   NOTFOUND: 404
+}
+	
+	$.ajax({
+		url: "/api/tbuser",
+		method: "POST",
+		headers: {"Content-Type": "application/json"},
+		data: JSON.stringify({
+			email: "xx123x@xxxx.com",
+	    	password: "testPass1!",
+	    	firstName: "a01!",
+	    	lastName: "b1!",
+		}),
+		success: (data, status, xhr)=>{
+        	switch(xhr.status){
+	    		case constants.HttpStatusCodes.OK:
+	    			alert(11);
+	    			break;
+	    		default:
+	    			console.log("no matching status code");
+	    	}
+		},
+		error: (data)=>{
+			switch(data.status){
+	    		case constants.HttpStatusCodes.UNAUTHORIZED:
+	    			alert("일치하는 계정 정보가 없습니다.");
+	    			break;
+	    		default:
+	    			console.log("no matching status code");
+	    	}
+		}
+	});
+	/*
+	$.ajax({
+		url: "/api/tbuser/login",
+		method: "POST",
+		headers: {"Content-Type": "application/json"},
+		data: JSON.stringify({
+			"email": email,
+			"password" : password
+		}),
+		success: (data, status, xhr)=>{
+        	switch(xhr.status){
+	    		case constants.HttpStatusCodes.OK:
+	    			location.href="/admin";
+	    			break;
+	    		default:
+	    			console.log("no matching status code");
+	    	}
+		},
+		error: (data)=>{
+			switch(data.status){
+	    		case constants.HttpStatusCodes.UNAUTHORIZED:
+	    			alert("일치하는 계정 정보가 없습니다.");
+	    			break;
+	    		default:
+	    			console.log("no matching status code");
+	    	}
+		}
+	});
+	*/
+	
+	
+}
+</script>
+
+</body>
+
+</html>
